@@ -17,4 +17,10 @@ LinkLogo.propTypes = {
     src: PropTypes.string,
     alt: PropTypes.string,
 };
+
+LinkLogo.defaultProps = {
+    to: '/',
+    src: `${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`,
+    alt: 'logo',
+};
 export default LinkLogo;
