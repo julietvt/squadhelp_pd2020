@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import {clearErrorSignUpAndLogin} from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
+import LinkLogo from "../../components/LinkLogo";
 
 const LoginPage = (props) => {
     const changeRoute = () => {
@@ -14,7 +15,7 @@ const LoginPage = (props) => {
         <div className={styles.mainContainer}>
             <div className={styles.loginContainer}>
                 <div className={styles.headerSignUpPage}>
-                    <img src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt="logo"/>
+                    <LinkLogo src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} />
                     <div className={styles.linkLoginContainer}>
                         <Link to='/registration' style={{textDecoration: 'none'}}><span>Signup</span></Link>
                     </div>

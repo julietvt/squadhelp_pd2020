@@ -24,6 +24,14 @@ class LoginForm extends React.Component {
     render() {
         const {error, isFetching} = this.props.auth;
         const {handleSubmit, submitting, authClear} = this.props;
+        const formInputClasses = {
+            container: styles.inputContainer,
+            input: styles.input,
+            warning: styles.fieldWarning,
+            notValid: styles.notValid,
+            valid: styles.valid,
+        };
+
         return (
             <div className={styles.loginForm}>
                 {error && <Error data={error.data} status={error.status} clearError={authClear}/>}
@@ -31,24 +39,14 @@ class LoginForm extends React.Component {
                 <form onSubmit={handleSubmit(this.clicked)}>
                     <Field
                         name='email'
-                        classes={{
-                            container: styles.inputContainer,
-                            input: styles.input,
-                            warning: styles.fieldWarning,
-                            notValid: styles.notValid
-                        }}
+                        classes={formInputClasses}
                         component={FormInput}
                         type='text'
                         label='Email Address'
                     />
                     <Field
                         name='password'
-                        classes={{
-                            container: styles.inputContainer,
-                            input: styles.input,
-                            warning: styles.fieldWarning,
-                            notValid: styles.notValid
-                        }}
+                        classes={formInputClasses}
                         component={FormInput}
                         type='password'
                         label='password'
