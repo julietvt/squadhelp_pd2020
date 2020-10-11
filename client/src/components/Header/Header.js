@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Header.module.sass';
 import {connect} from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
-import CONSTANTS from '../../constants';
+import CONSTANTS, {PHONE_NUMBER} from '../../constants';
 import {getUserAction, clearUserStore, headerRequest} from '../../actions/actionCreator';
 
 
@@ -68,10 +68,11 @@ class Header extends React.Component {
                     <a href="http://www.google.com">Read Announcement</a>
                 </div>
                 <div className={styles.loginSignnUpHeaders}>
-                    <div className={styles.numberContainer}>
+                    <a href={`tel:${PHONE_NUMBER}`}
+                        className={styles.numberContainer}>
                         <img src={`${CONSTANTS.STATIC_IMAGES_PATH}phone.png`} alt='phone'/>
-                        <span>(877)&nbsp;355-3585</span>
-                    </div>
+                        <span>&nbsp;&nbsp;{PHONE_NUMBER}</span>
+                    </a>
                     <div className={styles.userButtonsContainer}>
                         {this.renderLoginButtons()}
                     </div>
