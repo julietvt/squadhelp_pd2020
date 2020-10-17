@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
 const FormInput = (props) => {
     const {label, input, type, classes, meta: {touched, error, visited}} = props;
@@ -16,6 +17,16 @@ const FormInput = (props) => {
             (error && <span className={classes.warning}>(error)</span>))}
         </div>
     );
+};
+
+FormInput.propTypes = {
+    label: PropTypes.string,
+    input: PropTypes.object,
+    type: PropTypes.string,
+    container: PropTypes.string,
+    valid: PropTypes.string,
+    notValid: PropTypes.string,
+    warning: PropTypes.string
 };
 
 export default FormInput;
