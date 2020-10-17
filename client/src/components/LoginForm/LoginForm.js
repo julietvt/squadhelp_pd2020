@@ -8,7 +8,8 @@ import Schems from '../../validators/validationSchems';
 import {connect} from "react-redux";
 
 const LoginForm = props => {
-        const {handleSubmit, submitting} = props;
+        const {handleSubmit, handleError, submitting, loginRequest, authClear} = props;
+        const {error} = props.auth;
         const formInputClasses = {
             container: styles.inputContainer,
             input: styles.input,
@@ -16,9 +17,9 @@ const LoginForm = props => {
             notValid: styles.notValid,
             valid: styles.valid,
         };
-
+        handleError(error);
         return (
-                <form onSubmit={handleSubmit}>
+                <form className={styles.loginForm} onSubmit={(loginRequest)=>handleSubmit(loginRequest)}>
                     <Field
                         name='email'
                         classes={formInputClasses}
@@ -42,7 +43,19 @@ const LoginForm = props => {
         );
 };
 
-export default reduxForm({
+const mapStateToProps = (state) => {
+    const {auth} = state;
+    return {auth};
+};
+
+const mapDispatchToProps = (dispatch) => (
+    {
+        loginRequest: (data) => dispatch(authActionLogin(data)),
+        authClear: () => dispatch(clearAuth())
+    }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
     form: 'login',
-    validate: customValidator(Schems.LoginSchem)
-})(LoginForm);
+    validate: customValidator(Schemas.LoginSchem)
+})(LoginForm));

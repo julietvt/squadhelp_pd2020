@@ -10,41 +10,45 @@ import Error from "../../components/Error/Error";
 import handleSubmit from "redux-form/lib/handleSubmit";
 import { clearAuth } from '../../actions/actionCreator';
 
-const LoginPage = ({authClear, loginUser,...restProps}) => {
-    return (
-        <div className={styles.mainContainer}>
-            <div className={styles.loginContainer}>
-                <div className={styles.headerSignUpPage}>
-                    <LinkLogo src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} />
-                    <div className={styles.linkLoginContainer}>
-                        <Link to='/registration' style={{textDecoration: 'none'}}><span>Signup</span></Link>
-                    </div>
-                </div>
-                <div className={styles.loginFormContainer}>
-                    <div className={styles.loginFormWrapper}>
-                    <div className={styles.loginForm}>
+class LoginPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {error: null}
+    }
+    changeRoute = () => {
+        this.props.history.replace('/');
+    };
+    handleError = (error) => {
+        this.setState({error: error});
+    };
 
-                        { //error <Error data={error.data} status={error.status} clearError={authClear}/>
-                        }
-                        <h2>LOGIN TO YOUR ACCOUNT</h2>
-                    <LoginForm onSubmit={handleSubmit}/>
+    render() {
+        const {error} = this.state;
+        return (
+            <div className={styles.mainContainer}>
+                <div className={styles.loginContainer}>
+                    <div className={styles.headerSignUpPage}>
+                        <LinkLogo src={`${CONSTANTS.STATIC_IMAGES_PATH}logo.png`} alt='logo' />
+                        <div className={styles.linkLoginContainer}>
+                            <Link to='/registration' style={{textDecoration: 'none'}}><span>Signup</span></Link>
+                        </div>
                     </div>
+                    <div className={styles.loginFormContainer}>
+                        {error && <Error data={error.data} status={error.status} clearError={this.props.clearError}/>}
+                        <h2>LOGIN TO YOUR ACCOUNT</h2>
+                        <LoginForm handleError={this.handleError}/>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
+}
 
-};
-
-const mapStateToProps = state => state.auth;
 
 const mapDispatchToProps = (dispatch) => {
     return {
         clearError: () => dispatch(clearErrorSignUpAndLogin()),
-        loginUser: values => dispatch(authActionLogin(values)),
-        authClear: () => dispatch(clearAuth()),
-    };
+    }
 };
 
-export default connect (mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(null, mapDispatchToProps)(LoginPage);
