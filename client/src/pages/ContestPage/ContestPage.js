@@ -107,12 +107,9 @@ class ContestPage extends React.Component {
         const {role} = this.props.userStore.data;
         const {contestByIdStore, changeShowImage, changeContestViewMode, getData, clearSetOfferStatusError} = this.props;
         const {isShowOnFull, imagePath, error, isFetching, isBrief, contestData, offers, setOfferStatusError} = contestByIdStore;
-        const offerTab = (<span onClick{() =>
-            changeContestViewMode(false)}
+        const offerTab = (<span onClick={() => changeContestViewMode(false)}
                                 className={classNames(styles.btn, {[styles.activeBtn]:
-                                !isBrief})}>
-            Offer
-        </span> );
+                                !isBrief})}> Offer </span> );
         return (
             <div>
                 {/*<Chat/>*/}
