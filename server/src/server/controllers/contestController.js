@@ -245,6 +245,7 @@ module.exports.getCustomersContests = (req, res, next) => {
 module.exports.getContests = (req, res, next) => {
   const predicates = UtilFunctions.createWhereForAllContests(req.body.typeIndex,
     req.body.contestId, req.body.industry, req.body.awardSort);
+  //- req.body.typeIndex, + selectedContestTypes
   db.Contests.findAll({
     where: predicates.where,
     order: predicates.order,
@@ -263,6 +264,7 @@ module.exports.getContests = (req, res, next) => {
       contests.forEach(
         contest => contest.dataValues.count = contest.dataValues.Offers.length);
       let haveMore = true;
+      // if (contests.length === 0 || contest.length <=req.body.limit) {
       if (contests.length === 0) {
         haveMore = false;
       }

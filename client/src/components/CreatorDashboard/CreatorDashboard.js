@@ -5,7 +5,10 @@ import {
     getContestsForCreative,
     clearContestList,
     setNewCreatorFilter,
-    getDataForContest
+    getDataForContest,
+    createAddContestTypeAction,
+    createRemoveContestTypeAction,
+    createToggleContestTypeAction,
 } from '../../actions/actionCreator';
 import ContestsContainer from '../../components/ContestsContainer/ContestsContainer';
 import ContestBox from "../ContestBox/ContestBox";
@@ -21,19 +24,46 @@ const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline
 
 class CreatorDashboard extends React.Component {
 
+    badgeRender = () => {
+        const {creatorFilter: {selectedContestTypes}, removeTypeToFilter} = this.props;
+        return(
+            <span>
+                {selectedContestTypes.map( (badge) => (
+                    <button
+                        className={styles.badge}
+                        key={badge} value={badge}
+                        onClick={(e) => {
+                            e.preventDefault()
+                            removeTypeToFilter(e.currentTarget.value)
+                        }}>
+                        {
+                            badge
+                        }
+                        <i className="fa fa-times" aria-hidden="true"></i>
+                    </button>
+                ))}
+            </span>
+        );
+    };
 
     renderSelectType = () => {
-        const array = [];
-        const {creatorFilter} = this.props;
-        types.forEach((el, i) => !i || array.push(<option key={i - 1} value={el}>{el}</option>));
-        return (
-            <select onChange={({target}) => this.changePredicate({
-                name: 'typeIndex',
-                value: types.indexOf(target.value)
-            })} value={types[creatorFilter.typeIndex]} className={styles.input}>
-                {array}
-            </select>
-        );
+        const {addTypeToFilter} = this.props;
+        return (<select className={styles.input} onChange={ e=> {
+            addTypeToFilter(e.currentTarget.value)
+        }}>
+            <option value="" disabled selected>Select to filter</option>
+            {
+                types.map((type) => {
+                    return(
+                        <option key={type} value={type}>
+                            {
+                                type
+                            }
+                        </option>
+                    )
+                })
+            }
+        </select> )
     };
 
     renderIndustryType = () => {
@@ -51,6 +81,14 @@ class CreatorDashboard extends React.Component {
             </select>
         );
     };
+
+    componentDidUpdate(prevProps, prevSate, snapshot){
+        if(this.props.creatorFilter.selectedContestTypes !== prevProps.creatorFilter.selectedContestTypes){
+            console.log('prev contestTypes:',prevProps.creatorFilter.selectedContestTypes);
+            console.log('current contestTypes:',this.props.creatorFilter.selectedContestTypes);
+            this.getContests(this.props.creatorFilter);
+        }
+    }
 
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -96,7 +134,8 @@ class CreatorDashboard extends React.Component {
             contestId: obj.contestId ? obj.contestId : '',
             industry: obj.industry ? obj.industry : '',
             awardSort: obj.awardSort || 'asc',
-            ownEntries: typeof obj.ownEntries === "undefined" ? false : obj.ownEntries
+            ownEntries: typeof obj.ownEntries === "undefined" ? false : obj.ownEntries,
+            selectedContestTypes: obj.selectedContestTypes || [],
         };
         if (!isEqual(filter, this.props.creatorFilter)) {
             this.props.newFilter(filter);
@@ -212,6 +251,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        addTypeToFilter: data => dispatch(createAddContestTypeAction(data)),
+        removeTypeToFilter: data => dispatch(createRemoveContestTypeAction(data)),
+        toggleContest: data => dispatch(createToggleContestTypeAction(data)),
         getContests: (data) => dispatch(getContestsForCreative(data)),
         clearContestsList: () => dispatch(clearContestList()),
         newFilter: (filter) => dispatch(setNewCreatorFilter(filter)),
