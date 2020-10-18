@@ -1,32 +1,40 @@
-import React from 'react';
+import React      from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
+import PropTypes  from 'prop-types';
 
-const FormInput = (props) => {
-    const {label, input, type, classes, meta: {touched, error, visited}} = props;
-    const inputClassName = classNames(classes.input,
-        {
-            [classes.notValid]: touched && error,
-            [classes.valid]: visited && !error,
-        });
+const FormInput = ( props ) => {
+
+    const {
+        placeholder,
+        input, type,
+        inputStyles,
+        invalidStyles,
+        validStyles,
+        meta: { touched, error },
+    } = props;
+    console.log(input)
+    const computedInputStyles = classNames( inputStyles, {
+        [ invalidStyles ]: touched && error,
+        [ validStyles ]: touched && !error,
+    } );
+
     return (
-        <div className={classes.container}>
-            <input {...input} placeholder={label} type={type}
-            className={inputClassName}/>
-        {classes.warning && (touched &&
-            (error && <span className={classes.warning}>(error)</span>))}
-        </div>
+        <input {...input}
+               placeholder={placeholder}
+               type={type}
+               className={computedInputStyles}/>
     );
 };
 
+
 FormInput.propTypes = {
-    label: PropTypes.string,
+    placeholder: PropTypes.string,
     input: PropTypes.object,
     type: PropTypes.string,
-    container: PropTypes.string,
-    valid: PropTypes.string,
-    notValid: PropTypes.string,
-    warning: PropTypes.string
+
+    inputStyles: PropTypes.string,
+    invalidStyles: PropTypes.string,
+    validStyles: PropTypes.string,
 };
 
 export default FormInput;

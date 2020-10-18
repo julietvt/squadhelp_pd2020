@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, Component} from 'react';
 import LoginForm from '../../components/LoginForm/LoginForm';
 import styles from './LoginPage.module.sass';
 import {Link} from "react-router-dom";

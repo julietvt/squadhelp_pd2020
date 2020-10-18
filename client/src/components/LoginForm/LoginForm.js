@@ -57,5 +57,5 @@ const mapDispatchToProps = (dispatch) => (
 
 export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
     form: 'login',
-    validate: customValidator(Schemas.LoginSchem)
+    validate: customValidator(Schems.LoginSchem)
 })(LoginForm));

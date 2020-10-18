@@ -11,62 +11,34 @@ import AgreeTermOfServiceInput from '../AgreeTermOfServiceInput/AgreeTermOfServi
 import CONSTANTS from '../../constants';
 import customValidator from '../../validators/validator';
 import Schems from '../../validators/validationSchems';
+import FormError from '../FormError'
 
 
-class RegistrationForm extends React.Component {
-
-
-    componentWillUnmount() {
-        this.props.authClear();
-    }
-
-    clicked = (values) => {
-        this.props.register({
-            firstName: values.firstName,
-            lastName: values.lastName,
-            displayName: values.displayName,
-            email: values.email,
-            password: values.password,
-            role: values.role
-        });
+const RegistrationForm = props => {
+    const {handleSubmit, submitting} = props;
+    const formInputStyles = {
+        inputStyles: styles.input,
+        invalidStyles: styles.notValid,
+        validStyles: styles.valid,
     };
-
-
-    render() {
-        const {handleSubmit, submitting, auth, authClear} = this.props;
-        const {error} = auth;
-        const formInputClasses = {
-            container: styles.inputContainer,
-            input: styles.input,
-            warning: styles.fieldWarning,
-            notValid: styles.notValid,
-            valid: styles.valid,
-        };
-
+    const renderFiled = (field) => (
+        <label className={styles.inputContainer}>
+            <FormInput {...field} {...formInputStyles}/>
+            <FormError meta={field.meta} className={styles.fieldWarning}/>
+        </label>
+    );
         return (
-            <div className={styles.signUpFormContainer}>
-                {error && <Error data={error.data} status={error.status} clearError={authClear}/>}
-                <div className={styles.headerFormContainer}>
-                    <h2>
-                        CREATE AN ACCOUNT
-                    </h2>
-                    <h4>
-                        We always keep your name and email address private.
-                    </h4>
-                </div>
-                <form onSubmit={handleSubmit(this.clicked)}>
+            <form className={styles.signUpFormContainer} onSubmit={handleSubmit}>
                     <div className={styles.row}>
                         <Field
                             name='firstName'
-                            classes={formInputClasses}
-                            component={FormInput}
+                            component={renderFiled}
                             type='text'
                             label='First name'
                         />
                         <Field
                             name='lastName'
-                            classes={formInputClasses}
-                            component={FormInput}
+                            component={renderFiled}
                             type='text'
                             label='Last name'
                         />
@@ -74,15 +46,13 @@ class RegistrationForm extends React.Component {
                     <div className={styles.row}>
                         <Field
                             name='displayName'
-                            classes={formInputClasses}
-                            component={FormInput}
+                            component={renderFiled}
                             type='text'
                             label='Display Name'
                         />
                         <Field
                             name='email'
-                            classes={formInputClasses}
-                            component={FormInput}
+                            component={renderFiled}
                             type='text'
                             label='Email Address'
                         />
@@ -90,15 +60,13 @@ class RegistrationForm extends React.Component {
                     <div className={styles.row}>
                         <Field
                             name='password'
-                            classes={formInputClasses}
-                            component={FormInput}
+                            component={renderFiled}
                             type='password'
                             label='Password'
                         />
                         <Field
                             name='confirmPassword'
-                            classes={formInputClasses}
-                            component={FormInput}
+                            component={renderFiled}
                             type='password'
                             label='Password confirmation'
                         />
@@ -128,30 +96,14 @@ class RegistrationForm extends React.Component {
                         <span className={styles.inscription}>Create Account</span>
                     </button>
                 </form>
-            </div>
-        )
+        );
     }
-}
 
 
-const mapStateToProps = (state) => {
-    return {
-        auth: state.auth,
-        initialValues: {
-            role: CONSTANTS.CUSTOMER
-        }
-    }
-};
-
-const mapDispatchToProps = (dispatch) => (
-    {
-        register: (data) => dispatch(authActionRegister(data)),
-        authClear: () => dispatch(clearAuth())
-    }
-);
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(reduxForm({
-    form: 'login',
-    validate: customValidator(Schems.RegistrationSchem)
-})(RegistrationForm));
+export default reduxForm({
+    form: 'register',
+    initialValues: {
+        role: CONSTANTS.CUSTOMER,
+    },
+    validate: customValidator(Schems.RegistrationSchem),
+})(RegistrationForm);
