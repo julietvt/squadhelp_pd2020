@@ -1,4 +1,4 @@
-require('./dbMongo/mongoose');
+require('./db/dbMongo/mongoose');
 const http = require('http');
 const express = require('express');
 const router = require('./router');

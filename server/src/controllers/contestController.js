@@ -1,6 +1,7 @@
-const db = require('../models');
+const db = require('../db/models');
 import ServerError from '../errors/ServerError';
 
+const {Op} = require('sequelize');
 const contestQueries = require('./queries/contestQueries');
 const userQueries = require('./queries/userQueries');
 const controller = require('../socketInit');
@@ -118,6 +119,16 @@ module.exports.updateContest = async (req, res, next) => {
             userId: req.tokenData.userId,
         });
         res.send(updatedContest);
+    } catch (e) {
+        next(e);
+    }
+};
+
+module.exports.getOffersFiles = async (req, res, next) => {
+    try {
+        const {body: {queryFilter}} = req;
+        const result = await contestQueries.queryOffersFiles(queryFilter);
+        res.send(result);
     } catch (e) {
         next(e);
     }
@@ -263,7 +274,7 @@ module.exports.getContests = (req, res, next) => {
             contests.forEach(
                 contest => contest.dataValues.count = contest.dataValues.Offers.length);
             let haveMore = true;
-            if (contests.length === 0 || contest.length <=req.body.limit) {
+            if (contests.length === 0 || contest.length <= req.body.limit) {
                 haveMore = false;
             }
             res.send({contests, haveMore});

@@ -1,4 +1,4 @@
-const mongoose = require('server/src/dbMongo/mongoose');
+const mongoose = require('server/src/db/dbMongo/mongoose');
 const path = require('path');
 const env = process.env.NODE_ENV || 'development';
 const configPath = path.join(__dirname, '../config/mongoConfig.json');
