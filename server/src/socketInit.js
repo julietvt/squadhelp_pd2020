@@ -1,18 +1,18 @@
 const socketio = require('socket.io');
-const ChatController = require('./server/controllers/sockets/ChatController');
+const ChatController = require('./controllers/sockets/ChatController');
 const NotificationController = require(
-  './server/controllers/sockets/NotificationController');
+    './controllers/sockets/NotificationController');
 
 module.exports.createConnection = (httpServer) => {
-  const io = socketio.listen(httpServer);
-  NotificationController.connect('/notifications', io);
-  ChatController.connect('/chat', io);
+    const io = socketio.listen(httpServer);
+    NotificationController.connect('/notifications', io);
+    ChatController.connect('/chat', io);
 };
 
 module.exports.getChatController = () => {
-  return ChatController;
+    return ChatController;
 };
 
 module.exports.getNotificationController = () => {
-  return NotificationController;
+    return NotificationController;
 };

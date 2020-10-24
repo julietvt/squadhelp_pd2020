@@ -7,7 +7,8 @@ const initialState = {
     contests: [],
     customerFilter: CONSTANTS.CONTEST_STATUS_ACTIVE,
     creatorFilter: {
-        typeIndex: 1,
+        //typeIndex: 1,
+        selectedContestTypes: [],
         contestId: '',
         industry: '',
         awardSort: 'asc',
@@ -77,12 +78,36 @@ export default function (state = initialState, action) {
                 }
             }
         }
-        case ACTION.REMOVE_CONTEST_TYPE: {}
+        case ACTION.REMOVE_CONTEST_TYPE: {
+            const {data} = action
+            const {creatorFilter: {selectedContestTypes}, creatorFilter} = state
+            const contestSet = new Set(selectedContestTypes)
+            contestSet.delete(data)
+            return {
+                ...state,
+                creatorFilter: {
+                    ...creatorFilter,
+                    selectedContestTypes: [...contestSet],
+                }
+            }
+        }
         case ACTION.TOGGLE_CONTEST_TYPE: {}
-        /*
-        if(contestSet.has(data)) {contestSet.delete(data)}
-        else{ contestSet.add(data)}
-         */
+            const {data} = action
+            const {creatorFilter: {selectedContestTypes}, creatorFilter} = state
+            const contestSet = new Set(selectedContestTypes)
+            if(contestSet.has(data)) {
+                contestSet.delete(data);
+            }
+            else{
+                contestSet.add(data);
+            }
+            return {
+                ...state,
+                creatorFilter: {
+                    ...creatorFilter,
+                    selectedContestTypes: [...contestSet],
+                }
+            }
 
         default:
             return state;

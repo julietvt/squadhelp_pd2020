@@ -19,7 +19,8 @@ import isEqual from 'lodash/isEqual';
 import TryAgain from '../../components/TryAgain/TryAgain';
 
 
-const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline', 'logo,tagline', 'name,logo'];
+//const types = ['', 'name,tagline,logo', 'name', 'tagline', 'logo', 'name,tagline', 'logo,tagline', 'name,logo'];
+const types = ['name', 'tagline', 'logo'];
 
 
 class CreatorDashboard extends React.Component {

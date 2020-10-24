@@ -30,9 +30,21 @@ export const getCustomersContests = (data) => {
         }
     });
 };
-
+/*
 export const getActiveContests = ({offset, limit, typeIndex, contestId, industry, awardSort, ownEntries}) => {
     return http.post('getAllContests', {offset, limit, typeIndex, contestId, industry, awardSort, ownEntries})
+};
+
+export const getContestById = (data) => {
+    return http.get('getContestById', {
+        headers: {
+            contestId: data.contestId
+        }
+    });
+};
+*/
+export const getActiveContests = ({offset, limit, contestId, industry, awardSort, ownEntries, selectedContestTypes}) => {
+    return http.post('getAllContests', {offset, limit,contestId, industry, awardSort, ownEntries, selectedContestTypes})
 };
 
 export const getContestById = (data) => {
